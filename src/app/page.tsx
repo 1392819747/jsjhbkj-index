@@ -107,7 +107,7 @@ import { useState } from "react";
 export default function Home() {
   return (
     <div style={{ background: "#fff", minHeight: "100vh" }}>
-      <Header withSlogan={true} />
+      <Header />
       <CoreBusiness />
       <AboutBanner />
       <AtlasSection title="资质照片" images={CERT_PHOTOS} />

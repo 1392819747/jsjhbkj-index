@@ -77,18 +77,10 @@ export function TopNav() {
  * 头部容器 —— 还原原站 header
  * 导航 1000px 居中 + 幻灯片全宽铺满 + 标语层居中定位
  */
-export function Header({ withSlogan = true, slides }: { withSlogan?: boolean; slides?: { image: string; slogan: string; enSlogan: string }[] }) {
+export function Header({ slides }: { slides?: { image: string }[] }) {
   const slideList = slides || [
-    {
-      image: "/images/banner.jpg",
-      slogan: "珍爱地球 · 保护环境 · 合理开发",
-      enSlogan: "Cherish the earth and protect the environment and rational development",
-    },
-    {
-      image: "/images/banner2.jpg",
-      slogan: "珍爱地球 · 保护环境 · 合理开发",
-      enSlogan: "Cherish the earth and protect the environment and rational development",
-    },
+    { image: "/images/banner.jpg" },
+    { image: "/images/banner2.jpg" },
   ];
 
   return (
@@ -99,75 +91,12 @@ export function Header({ withSlogan = true, slides }: { withSlogan?: boolean; sl
       {/* 幻灯片 - 全宽铺满浏览器，高度 600px */}
       <div style={{ position: "relative", width: "100%", height: 600 }}>
         <Slideshow slides={slideList} />
-
-        {/* 标语层 - 相对于 1000px 居中容器定位 (top:110 相对于幻灯片, left:300 相对于 1000 容器) */}
-        {withSlogan && (
-          <div
-            style={{
-              position: "absolute",
-              left: 0,
-              top: 0,
-              width: "100%",
-              height: "100%",
-              pointerEvents: "none",
-            }}
-          >
-            <div
-              style={{
-                position: "relative",
-                width: 1000,
-                height: "100%",
-                margin: "0 auto",
-              }}
-            >
-              <div
-                style={{
-                  position: "absolute",
-                  left: 300,
-                  top: 110,
-                  width: 700,
-                  height: 194,
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  textAlign: "center",
-                }}
-              >
-                <div
-                  style={{
-                    color: "#27ae60",
-                    fontFamily: "'Source Han Sans', 'Microsoft YaHei', sans-serif",
-                    fontSize: 42,
-                    fontWeight: "bold",
-                    lineHeight: 1.4,
-                    textShadow: "0 2px 12px rgba(0,0,0,0.4)",
-                  }}
-                >
-                  珍爱地球 · 保护环境 · 合理开发
-                </div>
-                <div
-                  style={{
-                    color: "#fff",
-                    fontFamily: "'Microsoft YaHei', sans-serif",
-                    fontSize: 16,
-                    marginTop: 16,
-                    opacity: 0.95,
-                    textShadow: "0 1px 4px rgba(0,0,0,0.6)",
-                  }}
-                >
-                  Cherish the earth and protect the environment and rational development
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </header>
   );
 }
 
-function Slideshow({ slides }: { slides: { image: string; slogan: string; enSlogan: string }[] }) {
+function Slideshow({ slides }: { slides: { image: string }[] }) {
   const [idx, setIdx] = useState(0);
   const next = useCallback(() => setIdx((i) => (i + 1) % slides.length), [slides.length]);
   const prev = () => setIdx((i) => (i - 1 + slides.length) % slides.length);
@@ -189,7 +118,7 @@ function Slideshow({ slides }: { slides: { image: string; slogan: string; enSlog
             transition: "opacity 1s ease-in-out",
           }}
         >
-          <img src={s.image} alt={s.slogan} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+          <img src={s.image} alt="轮播图" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
         </div>
       ))}
 

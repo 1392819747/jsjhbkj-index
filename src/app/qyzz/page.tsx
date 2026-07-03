@@ -10,7 +10,7 @@ const QYZZ_IMAGES = [
 export default function QyzzPage() {
   return (
     <div style={{ background: "#fff", minHeight: "100vh" }}>
-      <Header withSlogan={false} />
+      <Header />
       <section style={{ width: 1000, margin: "0 auto", padding: "30px 0" }}>
         <div style={{ textAlign: "center", marginBottom: 30 }}>
           <p style={{ margin: 0, fontFamily: "'Microsoft YaHei', 微软雅黑" }}>
