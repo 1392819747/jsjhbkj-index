@@ -3,13 +3,8 @@ node_modules
 
 # next.js
 .next/
-out/
 
 # misc
 .DS_Store
 *.log
 .env*
-
-# build
-build/
-dist/
