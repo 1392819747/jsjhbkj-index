@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Header, Footer } from "@/components/site-layout";
 
-// /sbzs 设备展示 - 6 张设备图，原站为多图横向滚动（同时显示5张，自动滚动）
 const SBZS_SLIDES = [
   { src: "/images/sbzs-1.jpg" },
   { src: "/images/sbzs-4.jpg" },
@@ -16,7 +15,6 @@ const SBZS_SLIDES = [
 function MultiSlide() {
   const scrollerRef = useRef<HTMLDivElement>(null);
 
-  // 自动滚动
   useEffect(() => {
     const el = scrollerRef.current;
     if (!el) return;
@@ -24,7 +22,6 @@ function MultiSlide() {
     let pos = 0;
     const step = () => {
       pos += 0.5;
-      // 滚动到末尾后回到开头（无缝循环：复制了一份内容）
       const half = el.scrollWidth / 2;
       if (pos >= half) pos = 0;
       el.scrollLeft = pos;
@@ -34,12 +31,12 @@ function MultiSlide() {
     return () => cancelAnimationFrame(raf);
   }, []);
 
-  // 双份内容实现无缝循环
   const items = [...SBZS_SLIDES, ...SBZS_SLIDES];
 
   return (
     <div
       ref={scrollerRef}
+      className="equipment-slide"
       style={{
         width: "100%",
         height: 200,
@@ -54,7 +51,7 @@ function MultiSlide() {
           style={{
             display: "inline-block",
             width: 210,
-            height: 200,
+            height: "100%",
             marginRight: 10,
             verticalAlign: "top",
             overflow: "hidden",
@@ -63,12 +60,7 @@ function MultiSlide() {
           <img
             src={s.src}
             alt={`设备展示 ${(i % SBZS_SLIDES.length) + 1}`}
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              display: "block",
-            }}
+            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
           />
         </div>
       ))}
@@ -94,52 +86,80 @@ function LeaveForm() {
 
   return (
     <form onSubmit={handleSubmit} style={{ width: "100%" }}>
-      <table style={{ width: "100%", borderCollapse: "collapse" }}>
-        <tbody>
-          <tr>
-            <td style={{ width: 100, padding: "8px 0", verticalAlign: "middle" }}>
-              <label style={{ fontSize: 14, color: "#666", fontFamily: "'Microsoft YaHei', 微软雅黑" }}>留言标题</label>
-            </td>
-            <td style={{ padding: "8px 0" }}>
-              <input type="text" style={inputStyle} value={form.Subject} onChange={(e) => setForm({ ...form, Subject: e.target.value })} />
-            </td>
-          </tr>
-          <tr>
-            <td style={{ padding: "8px 0", verticalAlign: "top" }}>
-              <label style={{ fontSize: 14, color: "#666", fontFamily: "'Microsoft YaHei', 微软雅黑" }}>留言内容</label>
-            </td>
-            <td style={{ padding: "8px 0" }}>
-              <textarea style={{ ...inputStyle, height: 100, padding: "8px 12px", resize: "vertical" }} value={form.Message} onChange={(e) => setForm({ ...form, Message: e.target.value })} />
-            </td>
-          </tr>
-          <tr>
-            <td style={{ padding: "8px 0", verticalAlign: "middle" }}>
-              <label style={{ fontSize: 14, color: "#666", fontFamily: "'Microsoft YaHei', 微软雅黑" }}>联系邮箱</label>
-            </td>
-            <td style={{ padding: "8px 0" }}>
-              <input type="text" style={inputStyle} value={form.Email} onChange={(e) => setForm({ ...form, Email: e.target.value })} />
-            </td>
-          </tr>
-          <tr>
-            <td style={{ padding: "8px 0", verticalAlign: "middle" }}>
-              <label style={{ fontSize: 14, color: "#666", fontFamily: "'Microsoft YaHei', 微软雅黑" }}>验证码</label>
-            </td>
-            <td style={{ padding: "8px 0" }}>
-              <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
-                <input type="text" style={{ ...inputStyle, width: 150 }} value={form.Captcha} onChange={(e) => setForm({ ...form, Captcha: e.target.value })} />
-                <img src="/images/code.png" alt="验证码" style={{ height: 36, cursor: "pointer" }} />
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td style={{ padding: "8px 0" }}></td>
-            <td style={{ padding: "8px 0" }}>
-              <button type="submit" style={{ padding: "8px 30px", background: "#27ae60", color: "#fff", border: "none", fontSize: 14, fontFamily: "'Microsoft YaHei', 微软雅黑", cursor: "pointer", borderRadius: 2 }}>提交</button>
-              {submitted && <span style={{ marginLeft: 16, color: "#27ae60", fontSize: 14 }}>提交成功</span>}
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      {/* 桌面端用 table，手机端改 flex 布局 */}
+      <div className="form-table-desktop">
+        <table style={{ width: "100%", borderCollapse: "collapse" }}>
+          <tbody>
+            <tr>
+              <td style={{ width: 100, padding: "8px 0", verticalAlign: "middle" }}>
+                <label style={{ fontSize: 14, color: "#666", fontFamily: "'Microsoft YaHei', 微软雅黑" }}>留言标题</label>
+              </td>
+              <td style={{ padding: "8px 0" }}>
+                <input type="text" style={inputStyle} value={form.Subject} onChange={(e) => setForm({ ...form, Subject: e.target.value })} />
+              </td>
+            </tr>
+            <tr>
+              <td style={{ padding: "8px 0", verticalAlign: "top" }}>
+                <label style={{ fontSize: 14, color: "#666", fontFamily: "'Microsoft YaHei', 微软雅黑" }}>留言内容</label>
+              </td>
+              <td style={{ padding: "8px 0" }}>
+                <textarea style={{ ...inputStyle, height: 100, padding: "8px 12px", resize: "vertical" }} value={form.Message} onChange={(e) => setForm({ ...form, Message: e.target.value })} />
+              </td>
+            </tr>
+            <tr>
+              <td style={{ padding: "8px 0", verticalAlign: "middle" }}>
+                <label style={{ fontSize: 14, color: "#666", fontFamily: "'Microsoft YaHei', 微软雅黑" }}>联系邮箱</label>
+              </td>
+              <td style={{ padding: "8px 0" }}>
+                <input type="text" style={inputStyle} value={form.Email} onChange={(e) => setForm({ ...form, Email: e.target.value })} />
+              </td>
+            </tr>
+            <tr>
+              <td style={{ padding: "8px 0", verticalAlign: "middle" }}>
+                <label style={{ fontSize: 14, color: "#666", fontFamily: "'Microsoft YaHei', 微软雅黑" }}>验证码</label>
+              </td>
+              <td style={{ padding: "8px 0" }}>
+                <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+                  <input type="text" style={{ ...inputStyle, width: 150 }} value={form.Captcha} onChange={(e) => setForm({ ...form, Captcha: e.target.value })} />
+                  <img src="/images/code.png" alt="验证码" style={{ height: 36, cursor: "pointer" }} />
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td style={{ padding: "8px 0" }}></td>
+              <td style={{ padding: "8px 0" }}>
+                <button type="submit" style={{ padding: "8px 30px", background: "#27ae60", color: "#fff", border: "none", fontSize: 14, fontFamily: "'Microsoft YaHei', 微软雅黑", cursor: "pointer", borderRadius: 2 }}>提交</button>
+                {submitted && <span style={{ marginLeft: 16, color: "#27ae60", fontSize: 14 }}>提交成功</span>}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      {/* 手机端表单 */}
+      <div className="form-table-mobile">
+        <div style={{ marginBottom: 12 }}>
+          <label style={{ display: "block", fontSize: 14, color: "#666", marginBottom: 6, fontFamily: "'Microsoft YaHei', 微软雅黑" }}>留言标题</label>
+          <input type="text" style={inputStyle} value={form.Subject} onChange={(e) => setForm({ ...form, Subject: e.target.value })} />
+        </div>
+        <div style={{ marginBottom: 12 }}>
+          <label style={{ display: "block", fontSize: 14, color: "#666", marginBottom: 6, fontFamily: "'Microsoft YaHei', 微软雅黑" }}>留言内容</label>
+          <textarea style={{ ...inputStyle, height: 80, padding: "8px 12px", resize: "vertical" }} value={form.Message} onChange={(e) => setForm({ ...form, Message: e.target.value })} />
+        </div>
+        <div style={{ marginBottom: 12 }}>
+          <label style={{ display: "block", fontSize: 14, color: "#666", marginBottom: 6, fontFamily: "'Microsoft YaHei', 微软雅黑" }}>联系邮箱</label>
+          <input type="text" style={inputStyle} value={form.Email} onChange={(e) => setForm({ ...form, Email: e.target.value })} />
+        </div>
+        <div style={{ marginBottom: 12 }}>
+          <label style={{ display: "block", fontSize: 14, color: "#666", marginBottom: 6, fontFamily: "'Microsoft YaHei', 微软雅黑" }}>验证码</label>
+          <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+            <input type="text" style={{ ...inputStyle, width: 120 }} value={form.Captcha} onChange={(e) => setForm({ ...form, Captcha: e.target.value })} />
+            <img src="/images/code.png" alt="验证码" style={{ height: 36, cursor: "pointer" }} />
+          </div>
+        </div>
+        <button type="submit" style={{ padding: "10px 30px", background: "#27ae60", color: "#fff", border: "none", fontSize: 14, fontFamily: "'Microsoft YaHei', 微软雅黑", cursor: "pointer", borderRadius: 2 }}>提交</button>
+        {submitted && <span style={{ marginLeft: 16, color: "#27ae60", fontSize: 14 }}>提交成功</span>}
+      </div>
     </form>
   );
 }
@@ -148,7 +168,7 @@ export default function SbzsPage() {
   return (
     <div style={{ background: "#fff", minHeight: "100vh" }}>
       <Header />
-      <section style={{ width: 1000, margin: "0 auto", padding: "30px 0" }}>
+      <section className="container-1000" style={{ padding: "30px 0" }}>
         <div style={{ textAlign: "center", marginBottom: 30 }}>
           <p style={{ margin: 0, fontFamily: "'Microsoft YaHei', 微软雅黑" }}>
             <span style={{ color: "#000000", fontSize: 30 }}>设备展示</span>

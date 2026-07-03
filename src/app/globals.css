@@ -23,3 +23,217 @@ img {
   max-width: 100%;
   display: block;
 }
+
+/* ============ 响应式布局 ============ */
+
+/* 桌面端：1000px 居中容器 */
+.container-1000 {
+  width: 1000px;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+/* 导航：桌面 5 项横排 */
+.nav-desktop {
+  display: flex;
+}
+
+.nav-mobile-toggle {
+  display: none;
+}
+
+.nav-mobile-menu {
+  display: none;
+}
+
+/* 业务按钮容器：桌面 4 列横排 */
+.biz-grid {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+/* 图集网格：桌面 4 列 */
+.atlas-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 235px);
+  gap: 16px;
+  justify-content: center;
+}
+
+/* 关于我们内容：固定宽度 */
+.about-content {
+  width: 995px;
+  max-width: 100%;
+  padding: 0 20px;
+}
+
+/* ============ 平板 (≤1024px) ============ */
+@media (max-width: 1024px) {
+  .container-1000 {
+    width: 100%;
+    padding: 0 16px;
+  }
+
+  .atlas-grid {
+    grid-template-columns: repeat(2, 235px);
+  }
+}
+
+/* ============ 手机 (≤768px) ============ */
+@media (max-width: 768px) {
+  /* 隐藏桌面导航，显示汉堡菜单 */
+  .nav-desktop {
+    display: none;
+  }
+
+  .nav-mobile-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    color: #666;
+  }
+
+  .nav-mobile-menu.open {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-top: 1px solid #eee;
+  }
+
+  .nav-mobile-menu.open a {
+    padding: 14px 20px;
+    border-bottom: 1px solid #f5f5f5;
+    color: #666;
+    font-size: 14px;
+    font-family: 'Microsoft YaHei', 微软雅黑;
+  }
+
+  .nav-mobile-menu.open a:hover,
+  .nav-mobile-menu.open a.current {
+    color: #27ae60;
+    background: #f9fff9;
+  }
+
+  /* 容器全宽 */
+  .container-1000 {
+    width: 100%;
+    padding: 0 12px;
+  }
+
+  /* 业务按钮：2 列网格 */
+  .biz-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    padding: 0 8px;
+  }
+
+  /* 业务按钮卡片自适应宽度 */
+  .biz-card {
+    width: 100% !important;
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+  }
+
+  /* 图集：1 列居中 */
+  .atlas-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .atlas-grid > div {
+    width: 100% !important;
+    height: 200px !important;
+  }
+
+  /* 关于我们文字自适应 */
+  .about-content {
+    width: 100% !important;
+    padding: 0 16px !important;
+    font-size: 16px !important;
+    line-height: 1.8 !important;
+  }
+
+  /* 关于我们 banner 高度自适应 */
+  .about-banner-inner {
+    height: auto !important;
+    min-height: 400px;
+    padding: 20px 0;
+  }
+
+  /* 标题位置自适应 */
+  .about-title {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    width: 100% !important;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+
+  /* 核心业务标题 */
+  .section-title {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    width: 100% !important;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  /* 业务板块容器自适应高度 */
+  .biz-section {
+    height: auto !important;
+    padding: 30px 0;
+  }
+
+  /* 设备展示轮播图高度 */
+  .equipment-slide {
+    height: 150px !important;
+  }
+
+  /* 关于我们页面左右布局改上下 */
+  .gywm-flex {
+    flex-direction: column !important;
+    gap: 20px !important;
+  }
+
+  .gywm-slide {
+    width: 100% !important;
+    height: 220px !important;
+  }
+
+  .gywm-text {
+    width: 100% !important;
+  }
+
+  /* 设备展示表单：手机端隐藏 table，显示 flex 布局 */
+  .form-table-desktop {
+    display: none !important;
+  }
+  .form-table-mobile {
+    display: block !important;
+  }
+
+  /* 业务板块容器 */
+  .biz-section {
+    padding: 30px 12px !important;
+  }
+}
+
+/* 桌面端默认显示 table 表单 */
+.form-table-desktop {
+  display: block;
+}
+.form-table-mobile {
+  display: none;
+}

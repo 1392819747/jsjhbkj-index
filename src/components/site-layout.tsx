@@ -13,24 +13,19 @@ const NAV_ITEMS = [
 ];
 
 /**
- * 顶部导航 —— 还原原站 nav_pc_t_5 style5
- * 导航容器 1000px 居中，但导航条本身铺满容器宽度
+ * 顶部导航 —— 响应式
+ * 桌面：5 项横排 1000px 居中
+ * 手机：汉堡菜单 + 折叠下拉
  */
 export function TopNav() {
   const pathname = usePathname();
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
     <div style={{ width: "100%", background: "#fff", borderBottom: "1px solid #eeeeee" }}>
-      <div style={{ width: 1000, height: 57, margin: "0 auto" }}>
-        <ul
-          style={{
-            display: "flex",
-            listStyle: "none",
-            margin: 0,
-            padding: 0,
-            height: "100%",
-            width: "100%",
-          }}
-        >
+      <div className="container-1000" style={{ height: 57, position: "relative", display: "flex", alignItems: "center" }}>
+        {/* 桌面导航 */}
+        <ul className="nav-desktop" style={{ width: "100%", height: "100%" }}>
           {NAV_ITEMS.map((item) => {
             const isCurrent = pathname === item.href;
             return (
@@ -63,19 +58,49 @@ export function TopNav() {
             );
           })}
         </ul>
-        <style jsx>{`
-          .nav-item:hover .nav-link {
-            color: #27ae60 !important;
-          }
-        `}</style>
+
+        {/* 手机汉堡按钮 */}
+        <button
+          className="nav-mobile-toggle"
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="菜单"
+          style={{ marginLeft: "auto" }}
+        >
+          {menuOpen ? "✕" : "☰"}
+        </button>
       </div>
+
+      {/* 手机下拉菜单 */}
+      {menuOpen && (
+        <div className="nav-mobile-menu open">
+          {NAV_ITEMS.map((item) => {
+            const isCurrent = pathname === item.href;
+            return (
+              <Link
+                key={item.label}
+                href={item.href}
+                className={isCurrent ? "current" : ""}
+                onClick={() => setMenuOpen(false)}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
+        </div>
+      )}
+
+      <style jsx>{`
+        .nav-item:hover .nav-link {
+          color: #27ae60 !important;
+        }
+      `}</style>
     </div>
   );
 }
 
 /**
- * 头部容器 —— 还原原站 header
- * 导航 1000px 居中 + 幻灯片全宽铺满 + 标语层居中定位
+ * 头部容器 —— 响应式
+ * 导航 + 全宽幻灯片
  */
 export function Header({ slides }: { slides?: { image: string }[] }) {
   const slideList = slides || [
@@ -85,11 +110,9 @@ export function Header({ slides }: { slides?: { image: string }[] }) {
 
   return (
     <header style={{ width: "100%", position: "relative" }}>
-      {/* 导航 - 1000px 居中 */}
       <TopNav />
-
-      {/* 幻灯片 - 全宽铺满浏览器，高度 600px */}
-      <div style={{ position: "relative", width: "100%", height: 600 }}>
+      {/* 幻灯片 - 全宽铺满，高度响应式 */}
+      <div style={{ position: "relative", width: "100%", height: "clamp(240px, 50vw, 600px)" }}>
         <Slideshow slides={slideList} />
       </div>
     </header>
@@ -125,59 +148,28 @@ function Slideshow({ slides }: { slides: { image: string }[] }) {
       <button
         onClick={prev}
         style={{
-          position: "absolute",
-          left: 10,
-          top: "50%",
-          transform: "translateY(-50%)",
-          width: 36,
-          height: 36,
-          background: "rgba(0,0,0,0.3)",
-          border: "none",
-          color: "#fff",
-          fontSize: 22,
-          cursor: "pointer",
-          zIndex: 10,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
+          position: "absolute", left: 10, top: "50%", transform: "translateY(-50%)",
+          width: 36, height: 36, background: "rgba(0,0,0,0.3)", border: "none",
+          color: "#fff", fontSize: 22, cursor: "pointer", zIndex: 10,
+          display: "flex", alignItems: "center", justifyContent: "center",
         }}
         aria-label="上一张"
-      >
-        ‹
-      </button>
+      >‹</button>
       <button
         onClick={next}
         style={{
-          position: "absolute",
-          right: 10,
-          top: "50%",
-          transform: "translateY(-50%)",
-          width: 36,
-          height: 36,
-          background: "rgba(0,0,0,0.3)",
-          border: "none",
-          color: "#fff",
-          fontSize: 22,
-          cursor: "pointer",
-          zIndex: 10,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
+          position: "absolute", right: 10, top: "50%", transform: "translateY(-50%)",
+          width: 36, height: 36, background: "rgba(0,0,0,0.3)", border: "none",
+          color: "#fff", fontSize: 22, cursor: "pointer", zIndex: 10,
+          display: "flex", alignItems: "center", justifyContent: "center",
         }}
         aria-label="下一张"
-      >
-        ›
-      </button>
+      >›</button>
 
       <div
         style={{
-          position: "absolute",
-          bottom: 16,
-          left: "50%",
-          transform: "translateX(-50%)",
-          display: "flex",
-          gap: 8,
-          zIndex: 10,
+          position: "absolute", bottom: 16, left: "50%", transform: "translateX(-50%)",
+          display: "flex", gap: 8, zIndex: 10,
         }}
       >
         {slides.map((_, i) => (
@@ -185,14 +177,9 @@ function Slideshow({ slides }: { slides: { image: string }[] }) {
             key={i}
             onClick={() => setIdx(i)}
             style={{
-              width: i === idx ? 24 : 10,
-              height: 10,
-              borderRadius: 5,
+              width: i === idx ? 24 : 10, height: 10, borderRadius: 5,
               background: i === idx ? "#27ae60" : "rgba(255,255,255,0.6)",
-              border: "none",
-              cursor: "pointer",
-              transition: "all 0.3s",
-              padding: 0,
+              border: "none", cursor: "pointer", transition: "all 0.3s", padding: 0,
             }}
             aria-label={`第${i + 1}张`}
           />
@@ -203,24 +190,14 @@ function Slideshow({ slides }: { slides: { image: string }[] }) {
 }
 
 /**
- * 底部 - 全宽背景，内容 1000px 居中
+ * 底部 - 全宽绿色背景，内容居中
  */
 export function Footer() {
   return (
-    <footer
-      style={{
-        background: "rgb(39, 174, 96)",
-        width: "100%",
-      }}
-    >
-      <div style={{ width: 1000, margin: "0 auto", position: "relative", height: 50 }}>
+    <footer style={{ background: "rgb(39, 174, 96)", width: "100%" }}>
+      <div className="container-1000" style={{ position: "relative", height: 50, display: "flex", alignItems: "center", justifyContent: "center" }}>
         <div
           style={{
-            position: "absolute",
-            left: 410,
-            top: 11,
-            width: 254,
-            height: 30,
             textAlign: "center",
             color: "#ffffff",
             fontSize: 12,
@@ -236,7 +213,7 @@ export function Footer() {
 }
 
 /**
- * 图集组件 - 还原原站 altas: 8/12 张图 235x140 网格 + lzpreview 灯箱
+ * 图集组件 - 响应式：桌面 4 列 / 平板 2 列 / 手机 1 列
  */
 export function Atlas({
   images,
@@ -246,19 +223,10 @@ export function Atlas({
   cols?: 3 | 4;
 }) {
   const [lightbox, setLightbox] = useState<string | null>(null);
-  const gridCols = `repeat(${cols}, 235px)`;
 
   return (
     <>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: gridCols,
-          gap: 16,
-          justifyContent: "center",
-        }}
-        className="atlas-grid"
-      >
+      <div className="atlas-grid">
         {images.map((src, i) => (
           <div
             key={i}
@@ -287,7 +255,7 @@ export function Atlas({
         ))}
       </div>
 
-      {/* 分页器 - 还原原站 xn-pager: 页码居中显示 */}
+      {/* 分页器 */}
       <div
         style={{
           textAlign: "center",
@@ -297,7 +265,8 @@ export function Atlas({
           fontFamily: "Tahoma, Arial",
         }}
       >
-        共 {images.length} 条 {Math.ceil(images.length / 8)} 页 <span style={{ color: "#27ae60" }}>1</span>/{Math.ceil(images.length / 8)} 页
+        共 {images.length} 条 {Math.ceil(images.length / 8)} 页{" "}
+        <span style={{ color: "#27ae60" }}>1</span>/{Math.ceil(images.length / 8)} 页
       </div>
 
       <style jsx>{`
@@ -314,30 +283,14 @@ export function Atlas({
         .atlas-item:hover .atlas-mask {
           opacity: 1;
         }
-        @media (max-width: 1024px) {
-          :global(.atlas-grid) {
-            grid-template-columns: repeat(2, 235px) !important;
-          }
-        }
-        @media (max-width: 540px) {
-          :global(.atlas-grid) {
-            grid-template-columns: repeat(1, 235px) !important;
-          }
-        }
       `}</style>
 
       {lightbox && (
         <div
           onClick={() => setLightbox(null)}
           style={{
-            position: "fixed",
-            inset: 0,
-            background: "rgba(0,0,0,0.85)",
-            zIndex: 9999,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: 20,
+            position: "fixed", inset: 0, background: "rgba(0,0,0,0.85)",
+            zIndex: 9999, display: "flex", alignItems: "center", justifyContent: "center", padding: 20,
           }}
         >
           <img
@@ -349,21 +302,11 @@ export function Atlas({
           <button
             onClick={() => setLightbox(null)}
             style={{
-              position: "absolute",
-              top: 20,
-              right: 30,
-              background: "rgba(255,255,255,0.1)",
-              border: "none",
-              color: "#fff",
-              fontSize: 32,
-              cursor: "pointer",
-              width: 44,
-              height: 44,
-              borderRadius: "50%",
+              position: "absolute", top: 20, right: 30,
+              background: "rgba(255,255,255,0.1)", border: "none", color: "#fff",
+              fontSize: 32, cursor: "pointer", width: 44, height: 44, borderRadius: "50%",
             }}
-          >
-            ×
-          </button>
+          >×</button>
         </div>
       )}
     </>

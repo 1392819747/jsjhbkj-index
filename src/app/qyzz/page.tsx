@@ -11,7 +11,7 @@ export default function QyzzPage() {
   return (
     <div style={{ background: "#fff", minHeight: "100vh" }}>
       <Header />
-      <section style={{ width: 1000, margin: "0 auto", padding: "30px 0" }}>
+      <section className="container-1000" style={{ padding: "30px 0" }}>
         <div style={{ textAlign: "center", marginBottom: 30 }}>
           <p style={{ margin: 0, fontFamily: "'Microsoft YaHei', 微软雅黑" }}>
             <span style={{ color: "#000000", fontSize: 30 }}>企业资质</span>

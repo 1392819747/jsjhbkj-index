@@ -2,8 +2,6 @@
 
 import { Header, Footer, Atlas } from "@/components/site-layout";
 
-/* ---------------- 原网站数据（完全保留原文） ---------------- */
-
 const CORE_BUSINESS = [
   { icon: "/images/icon-1.png", iconHover: "/images/icon-1-hover.png", title: "甲醛处理", desc: "专业研究和从事甲醛处理" },
   { icon: "/images/icon-2.png", iconHover: "/images/icon-2-hover.png", title: "开荒保洁", desc: "专业研究和从事开荒保洁" },
@@ -23,22 +21,16 @@ const INDUSTRY_SUMMIT = [
   "/images/cert5.jpg", "/images/cert6.jpg", "/images/cert7.jpg", "/images/cert8.jpg",
 ];
 
-/* ---------------- 业务卡片 ---------------- */
-function BizCard({
-  position, icon, iconHover, title, desc,
-}: {
-  position: { left: number; top: number };
-  icon: string; iconHover: string; title: string; desc: string;
-}) {
+/* 业务卡片 - 响应式 */
+function BizCard({ icon, iconHover, title, desc }: { icon: string; iconHover: string; title: string; desc: string }) {
   const [hover, setHover] = useState(false);
   return (
-    <div style={{ position: "absolute", left: position.left, top: position.top, width: 186, height: 188 }}>
+    <div className="biz-card" style={{ width: 186, height: 188, textAlign: "center", position: "relative" }}>
       <button
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
         style={{
-          position: "absolute", left: 38, top: 0, width: 110, height: 110,
-          border: `1px solid ${hover ? "#27b244" : "#eeeeee"}`,
+          width: 110, height: 110, border: `1px solid ${hover ? "#27b244" : "#eeeeee"}`,
           borderRadius: "50%",
           background: `url("${hover ? iconHover : icon}") no-repeat center center`,
           backgroundColor: hover ? "transparent" : "#fff",
@@ -46,53 +38,52 @@ function BizCard({
         }}
         aria-label={title}
       />
-      <div style={{ position: "absolute", left: 43, top: 130, width: 99, height: 26, textAlign: "center", color: "#27ae60", fontFamily: "'Microsoft YaHei', 微软雅黑", fontSize: 18, fontWeight: "bold", lineHeight: "26px" }}>{title}</div>
-      <div style={{ position: "absolute", left: 0, top: 166, width: 186, height: 22, textAlign: "center", color: "#bdc3c7", fontFamily: "'Microsoft YaHei', 微软雅黑", fontSize: 14, lineHeight: "22px" }}>{desc}</div>
+      <div style={{ marginTop: 12, color: "#27ae60", fontFamily: "'Microsoft YaHei', 微软雅黑", fontSize: 18, fontWeight: "bold" }}>{title}</div>
+      <div style={{ marginTop: 4, color: "#bdc3c7", fontFamily: "'Microsoft YaHei', 微软雅黑", fontSize: 14 }}>{desc}</div>
     </div>
   );
 }
 
-/* ---------------- 核心业务板块（1000px 居中） ---------------- */
+/* 核心业务板块 */
 function CoreBusiness() {
   return (
-    <section style={{ width: 1000, margin: "0 auto", position: "relative", height: 340 }}>
+    <section className="container-1000 biz-section" style={{ position: "relative", padding: "40px 0", minHeight: 340 }}>
       {/* 标题 */}
-      <div style={{ position: "absolute", left: 414, top: 24, width: 171, height: 36, textAlign: "center" }}>
+      <div className="section-title" style={{ position: "absolute", left: 414, top: 24, width: 171, height: 36, textAlign: "center" }}>
         <div style={{ fontFamily: "'Microsoft JhengHei', 微软雅黑", fontSize: 36, color: "#000000", fontWeight: "bold", lineHeight: 1.2 }}>核心业务</div>
         <div style={{ fontFamily: "'Microsoft YaHei', 微软雅黑", fontSize: 16, color: "#bdc3c7", marginTop: 8 }}>Core Business</div>
         <div style={{ width: 35, height: 3, background: "#6aa84f", margin: "12px auto 0" }} />
       </div>
-      {/* 4 业务按钮 */}
-      <div style={{ position: "absolute", left: 78, top: 152, width: 401, height: 188 }}>
-        <BizCard position={{ left: 0, top: 0 }} {...CORE_BUSINESS[0]} />
-        <BizCard position={{ left: 215, top: 0 }} {...CORE_BUSINESS[1]} />
-      </div>
-      <div style={{ position: "absolute", left: 510, top: 152, width: 408, height: 188 }}>
-        <BizCard position={{ left: 0, top: 0 }} {...CORE_BUSINESS[2]} />
-        <BizCard position={{ left: 222, top: 0 }} {...CORE_BUSINESS[3]} />
+      {/* 4 业务按钮 - 响应式 */}
+      <div className="biz-grid" style={{ marginTop: 100 }}>
+        {CORE_BUSINESS.map((b, i) => (
+          <BizCard key={i} {...b} />
+        ))}
       </div>
     </section>
   );
 }
 
-/* ---------------- 关于我们 banner（全宽绿色背景，内部 1000px 居中） ---------------- */
+/* 关于我们 banner - 全宽绿色背景 */
 function AboutBanner() {
   return (
     <section style={{ background: "rgb(39, 174, 96)", width: "100%" }}>
-      <div style={{ width: 1000, margin: "0 auto", position: "relative", height: 783 }}>
-        <div style={{ position: "absolute", left: 414, top: 29, width: 171, height: 38, textAlign: "center", color: "#fff", fontFamily: "'Microsoft JhengHei', 微软雅黑", fontSize: 36, fontWeight: "bold", lineHeight: "38px" }}>关于我们</div>
-        <div style={{ position: "absolute", left: 416, top: 78, width: 167, height: 20, textAlign: "center", color: "#ecf0f1", fontFamily: "'Microsoft YaHei', 微软雅黑", fontSize: 16, lineHeight: "20px" }}>Typical Case</div>
-        <div style={{ position: "absolute", left: 482, top: 98, width: 35, height: 3, background: "#fff" }} />
-        <div style={{ position: "absolute", left: 2, top: 122, width: 995, height: 676, color: "#fff", fontFamily: "'Source Han Sans', Geneva, sans-serif", fontSize: 22, lineHeight: 2.0, textAlign: "justify", padding: "0 20px", overflow: "hidden" }}>{COMPANY_INTRO_FULL}</div>
+      <div className="container-1000 about-banner-inner" style={{ position: "relative", height: 783 }}>
+        <div className="about-title" style={{ position: "absolute", left: 414, top: 29, width: 171, height: 38, textAlign: "center", color: "#fff", fontFamily: "'Microsoft JhengHei', 微软雅黑", fontSize: 36, fontWeight: "bold", lineHeight: "38px" }}>关于我们</div>
+        <div className="about-title" style={{ position: "absolute", left: 416, top: 78, width: 167, height: 20, textAlign: "center", color: "#ecf0f1", fontFamily: "'Microsoft YaHei', 微软雅黑", fontSize: 16, lineHeight: "20px" }}>Typical Case</div>
+        <div style={{ position: "absolute", left: "50%", transform: "translateX(-50%)", top: 98, width: 35, height: 3, background: "#fff" }} />
+        <div className="about-content" style={{ position: "absolute", left: 2, top: 122, height: 676, color: "#fff", fontFamily: "'Source Han Sans', Geneva, sans-serif", fontSize: 22, lineHeight: 2.0, textAlign: "justify", overflow: "hidden" }}>
+          {COMPANY_INTRO_FULL}
+        </div>
       </div>
     </section>
   );
 }
 
-/* ---------------- 图集板块（1000px 居中） ---------------- */
+/* 图集板块 */
 function AtlasSection({ title, images }: { title: string; images: string[] }) {
   return (
-    <section style={{ width: 1000, margin: "0 auto", padding: "30px 0" }}>
+    <section className="container-1000" style={{ padding: "30px 0" }}>
       <div style={{ textAlign: "center", marginBottom: 30 }}>
         <div style={{ fontFamily: "'Source Han Sans', Geneva, sans-serif", fontSize: 36, color: "#000", fontWeight: "bold" }}>{title}</div>
         <div style={{ width: 35, height: 3, background: "#6aa84f", margin: "12px auto 0" }} />
